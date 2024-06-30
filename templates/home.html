@@ -7,7 +7,9 @@
   </style>
 {% endblock %}
 {% block content %}
-  <h1>Index</h1>
+{% if user %}
+  <h1>Logado {{ user }}</h1>
+
   <h1>Teste ABC</h1>
   <p class="important">
     Minha super mega página web.
