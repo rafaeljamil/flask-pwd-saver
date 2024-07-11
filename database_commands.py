@@ -11,6 +11,8 @@ def connect_to_database() -> object:
 #print(con)
 #print(type(con))
 
+#----------------------------------------#
+# Criação do banco de dados e das tabelas
 def create_tables() -> None: #Funcionando
     con = connect_to_database()
     cursor = con.cursor()
@@ -44,6 +46,37 @@ def insert_service(data: list) -> None: #Funcionando
     con.commit()
     con.close()
 
+def update_service(data: list) -> None:
+    con = connect_to_database()
+    cursor = con.cursor()
+    cursor.execute("UPDATE services SET service_key = ? WHERE service_name = ? AND user_id = ?", (data[0], data[1], data[2])) # [new service key, service name, user id]
+    con.commit()
+    con.close()
+
+#----------------------------------------#
+# Queries
+# SELECT user
+def get_user_by_username(username: str) -> list: #Funcionando
+    con = connect_to_database()
+    cursor = con.cursor()
+    db_response = cursor.execute("SELECT rowid, password FROM users WHERE username = ?", (username,)) #rowid volta como key 'id'
+    return db_response.fetchone()
+
+# SELECT service by service_name and user_id
+def get_service(service_name: str, user_id: int) -> list: #Funcionando
+    con = connect_to_database()
+    cursor = con.cursor()
+    db_response = cursor.execute("SELECT service_key FROM services WHERE service_name = ? AND user_id = ?", (service_name, user_id))
+    return db_response.fetchone()
+
+# SELECT token
+def get_user_token(user_id: int) -> list: #Funcionando
+    con = connect_to_database()
+    cursor = con.cursor()
+    db_response = cursor.execute("SELECT token FROM tokens WHERE user_id = ?", (user_id,))
+    return db_response.fetchone()
+
+
 def query_database(table: str, column: str, query: str|int) -> object: # Funcionando
     con = connect_to_database()
     cursor = con.cursor()
@@ -61,10 +94,8 @@ def query_database_script(script: str) -> object: # Funcionando
     #con.close()     
     return db_response
 
-
-
-# TESTS
-
+#----------------------------------------#
+# TESTES
 # insert tests
 test_user = ["fuleiro", "fuleiro123"]
 test_token = [1, "token_do_fuleiro"]
@@ -96,12 +127,21 @@ def test_query_database_script():
     result = query.fetchone()
     print(result['service_name'])
 
+def test_select_func():
+    query_user = get_user_by_username("teste")
+    query_service = get_service("netflix", 1)
+    query_token = get_user_token(1)
+    print(f"{query_user['password']=}")
+    print(query_service['service_key']) # funciona com query[0] também
+    print(f"{query_token['token']=}")
+
 if __name__ == '__main__':
     print("Biblioteca de interação com o banco de dados.")
     # create_tables() #rodando a primeira vez
     # test_database_insert()
     # test_query_database()
-    test_query_database_script()
+    # test_query_database_script()
+    test_select_func()
 
 
 
