@@ -49,7 +49,7 @@ def insert_service(data: list) -> None: #Funcionando
 def update_service(data: list) -> None:
     con = connect_to_database()
     cursor = con.cursor()
-    cursor.execute("UPDATE services SET service_key = ? WHERE service_name = ? AND user_id = ?", (data[0], data[1], data[2])) # [new service key, service name, user id]
+    cursor.execute("UPDATE services SET service_key = ? WHERE service_name = ? AND user_id = ?", (data[2], data[1], data[0])) # [new service key, service name, user id]
     con.commit()
     con.close()
 

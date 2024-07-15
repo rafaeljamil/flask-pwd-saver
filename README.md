@@ -6,7 +6,7 @@ Flask app for managing passwords
 - Creating users 
 - Login 
 - Creating and searching services entries
+- Editing saved passwords
 
 #TODO:
 - Flask app
-- Funcionality to edit entries

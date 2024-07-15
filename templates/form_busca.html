@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}PWD Saver{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+{% if user %}
+  <h1>Logado {{ user }}</h1>
+{% endif %}
+    <h1>Teste ABC</h1>
+    <form action="/buscar" method="post">
+
+      <input type="text" name="busca" placeholder="Buscar">
+      <input class="btn btn-success" type="submit" value="Buscar">
+
+    </form>
+{% if busca != 0 %}
+    <div>
+        <p>{{busca}}</p>
+    </div>
+{% else %}
+    <div>
+        <p>placeholder</p>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+
+
+
+
