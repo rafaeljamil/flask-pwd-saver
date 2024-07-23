@@ -20,7 +20,7 @@ def create_tables() -> None: #Funcionando
         BEGIN;
         CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username UNIQUE, password);
         CREATE TABLE IF NOT EXISTS tokens (id INTEGER PRIMARY KEY, user_id, token, FOREIGN KEY (user_id) REFERENCES user(id));
-        CREATE TABLE IF NOT EXISTS services (id INTEGER PRIMARY KEY, user_id, service_name, service_key, FOREIGN KEY (user_id) REFERENCES user(id));
+        CREATE TABLE IF NOT EXISTS services (id INTEGER PRIMARY KEY, user_id, service_name UNIQUE, service_key, FOREIGN KEY (user_id) REFERENCES user(id));
         COMMIT;
 """)
     # print("Banco de dados criado com sucesso.")

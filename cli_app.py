@@ -22,15 +22,6 @@ def new_user() -> None:
         print("Usuário criado.") if response["create_user"] == 0 else print("Erro na criação de usuário.")
         print("Token salvo.") if response["create_token"] == 0 else print("Erro na criação do token.")
         time.sleep(3)
-#        user_key = fc.create_key()
-#        enc_pwd = fc.enc_msg(user_key, password)
-#        user_info = [username, enc_pwd]
-#        db.insert_user(user_info)
-#        print("Usuário criado.")
-#        user = db.get_user_by_username(username) # buscando em users por username
-#        user_id = user['id']        
-#        db.insert_token([user_id, user_key])
-#        print("Token salvo.")
     else:
         print("Dados não confirmados. Cancelando ação.")
         time.sleep(3)
@@ -108,43 +99,44 @@ def edit_entry_password(user: list) -> None:
 # Deveria adicionar a função de excluir?
 
 login = False
+def run() -> None:
+    while True:
+        user = []    
+        clear_screen()
+        print("""
+    Password Saver - Salva senhas criptografadas.
+    Comandos: sair, registrar, login.
+        """)
+        cmd_1 = input("-> ")
+        match cmd_1.lower():
+            case "sair":
+                break
+            case "registrar":
+                new_user()
+                continue
+            case "login":
+                user = user_login()
+                if len(user) > 0:
+                    login = True
+                    while login:
+                        clear_screen()
+                        print(f"Logado como {user[1]}")
+                        print("Comandos: criar, buscar, editar, voltar")
+                        cmd_2 = input("-> ")
+                        match cmd_2.lower():
+                            case "voltar":
+                                break
+                            case "criar":
+                                create_entry(user)
+                                continue
+                            case "buscar":
+                                query = input("Nome do serviço que deseja buscar: ")
+                                find_entry_by_name(user[0], query)
+                                continue
+                            case "editar":
+                                edit_entry_password(user)
+                                continue
+                continue
 
-while True:
-    user = []    
-    clear_screen()
-    print("""
-Password Saver - Salva senhas criptografadas.
-Comandos: sair, registrar, login.
-    """)
-    cmd_1 = input("-> ")
-    match cmd_1.lower():
-        case "sair":
-            break
-        case "registrar":
-            new_user()
-            continue
-        case "login":
-            user = user_login()
-            if len(user) > 0:
-                login = True
-                while login:
-                    clear_screen()
-                    print(f"Logado como {user[1]}")
-                    print("Comandos: criar, buscar, editar, voltar")
-                    cmd_2 = input("-> ")
-                    match cmd_2.lower():
-                        case "voltar":
-                            break
-                        case "criar":
-                            create_entry(user)
-                            continue
-                        case "buscar":
-                            query = input("Nome do serviço que deseja buscar: ")
-                            find_entry_by_name(user[0], query)
-                            continue
-                        case "editar":
-                            edit_entry_password(user)
-                            continue
-            continue
-
-
+if __name__ == "__main__":
+    run()

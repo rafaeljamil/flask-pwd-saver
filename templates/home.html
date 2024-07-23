@@ -8,18 +8,19 @@
 {% endblock %}
 {% block content %}
 {% if user %}
-  <h1>Logado {{ user }}</h1>
+  <h3>Logado {{ user }}</h3>
 {% endif %}
   <h1>Teste ABC</h1>
-  <p class="important">
-    Minha super mega página web.
     <!-- Pode ser usado include pra adicionar templates. Combinando com bloco if é possível personalizar melhor o documento -->
   <div class="container">
-    <form class="col" action="/buscar" method="get">
-      <input class="btn btn-success" type="submit" id="buscar" name="Buscar" value="buscar">
+    <form class="col" action="/{{ user }}/buscar" method="get">
+      <input class="btn btn-success" type="submit" value="Buscar">
     </form>
-    <form class="col" action="/criar" method="get">
-      <input class="btn btn-success" type="submit" id="criar" name="Criar" value="criar">  
+    <form class="col" action="/{{ user }}/criar" method="get">
+      <input class="btn btn-success" type="submit" value="Criar">  
+    </form>
+    <form class="col" action="/{{ user }}/editar" method="get">
+      <input class="btn btn-success" type="submit" value="Editar">  
     </form>
   </div>
 

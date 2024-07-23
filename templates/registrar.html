@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}PWD Saver{% endblock %}
 {% block content %}
-    <p>Login</p>
+    <p>Registrar</p>
     <div class='container'>
         <div class='row'>
             <form method='post'>
@@ -16,7 +16,13 @@
                 </div>                
                 <div class='col align-self-center'>
                     <input type='password' name='password'>
+                </div>   
+                <div class='col align-self-center'>
+                    <label>Confirmar Senha</label>
                 </div>                
+                <div class='col align-self-center'>
+                    <input type='password' name='password1'>
+                </div>              
                 <div class='col align-self-center'>
                     <input class='btn btn-success' type='submit' value='Login'>
                 </div>
@@ -24,6 +30,6 @@
         </div>
     </div>
     <div>
-        <a href="/registrar">Registrar</a>
+        <a href="/login">Login</a>
     </div>
 {% endblock %}

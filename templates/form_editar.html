@@ -10,29 +10,15 @@
 {% if user %}
   <h3>Logado {{ user }}</h3>
 {% endif %}
-    <h1>Buscar</h1>
-    <a href="/home">Home</a>
-    <form action="/{{ user }}/buscar" method="post">
+  <h1>Editar</h1>
+    <!-- Pode ser usado include pra adicionar templates. Combinando com bloco if é possível personalizar melhor o documento -->
+  <a href="/home">Home</a>
+  <div class="container">
+    <form action="#" method="post">
       <input type="text" name="busca" placeholder="Buscar">
       <input class="btn btn-success" type="submit" value="Buscar">
     </form>
-{% if busca == None %}
-    <div>
-        <p>Serviço não encontrado</p>
-    </div>
-{% elif busca != 0 %}
-    <div>
-        <p>A senha para este serviço é {{busca}}</p>
-    </div>
-{% else %}
-    <div>
-        <p></p>
-    </div>
-{% endif %}
+  </div>
+    <p> {{message}} </p>
 
 {% endblock %}
-
-
-
-
-

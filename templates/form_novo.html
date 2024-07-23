@@ -1,8 +1,36 @@
-<form method="post">
+{% extends "layout.html" %}
+{% block title %}PWD Saver{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+{% if user %}
+  <h3>Logado {{ user }}</h3>
+{% endif %}
+  <h1>Novo</h1>
+  <a href="/home">Home</a>
+    <!-- Pode ser usado include pra adicionar templates. Combinando com bloco if é possível personalizar melhor o documento -->
+  <div class="container">
+    <form class="form-group" method="post">
+      <input class="form-control" type="text" name="service" placeholder="Nome do serviço">
+      <br>
+      <input class="form-control" type="password" name="password" placeholder="Senha do serviço">
+      <br>
+      <input class="form-control" type="password" name="usr_pwd" placeholder="Senha do usuário">
+      <br>
+      <input class="btn btn-success" type="submit" value="Criar">
+    </form>
+  </div>
+  <div>
+    <p>{{message}}</p>
+  </div>
 
-  <label for="service">Nome
-  <input type="text" name="service">
-  <label for="password">Senha
-  <input type="password" name="password">
+{% endblock %}
 
-</form>
+
+
+
+

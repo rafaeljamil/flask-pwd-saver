@@ -4,13 +4,13 @@ import database_commands as db
 
 # NOVO USUARIO
 def new_user(username:str, password:str) -> dict:
-    resp = dict()    
+    resp = dict() #{'create_user': int, 'create_token': int} usar try/except no futuro
     user_key = fc.create_key()
     enc_pwd = fc.enc_msg(user_key, password)
     user_info = [username, enc_pwd]
     db.insert_user(user_info)
     resp["create_user"] = 0
-    user = db.get_user_by_username(username) # buscando em users por username
+    user = db.get_user_by_username(username)
     user_id = user['id']        
     db.insert_token([user_id, user_key])
     resp["create_token"] = 0
@@ -18,14 +18,15 @@ def new_user(username:str, password:str) -> dict:
 
 # LOGIN USUARIO
 def user_login(username, password) -> dict:
-    resp = dict()
-    db_user = db.get_user_by_username(username) # buscando em users por username
+    resp = dict() #{'user': int, 'data': {'user_id': user_id(int), 'username': username(str)}}
+    
+    db_user = db.get_user_by_username(username) 
     if db_user == None:
         resp["user"] = -1
     else:
         resp["user"] = 0
         resp["data"] = dict()
-        db_fernet = db.get_user_token(db_user['id']) #buscando em tokens por user_id
+        db_fernet = db.get_user_token(db_user['id'])
         dec_pwd = fc.dec_msg(db_fernet['token'], db_user['password'])
         if password == dec_pwd:
             resp["data"]["user_id"] = db_user["id"]
@@ -41,8 +42,9 @@ def check_password(data: list) -> bool:
     user_id = data[0]
     username = data[1]
     usr_pwd = data[2]
-    db_user = db.get_user_by_username(username) # buscando em users por username 
-    db_fernet = db.get_user_token(user_id) # buscando em tokens por user_id
+
+    db_user = db.get_user_by_username(username)
+    db_fernet = db.get_user_token(user_id) 
     dec_pwd = fc.dec_msg(db_fernet["token"], db_user["password"])
     return True if usr_pwd == dec_pwd else False
 
@@ -50,6 +52,7 @@ def check_password(data: list) -> bool:
 def create_password(data: list) -> str:
     user_id = data[0]
     svc_pwd = data[1]
+
     db_fernet = db.get_user_token(user_id)
     enc_svc_pwd = fc.enc_msg(db_fernet["token"], svc_pwd)
     return enc_svc_pwd
@@ -61,8 +64,8 @@ def create_entry(data: list) -> int:
     service = data[2]
     svc_pwd = data[3]
     usr_pwd = data[4]
-    check_data = [user_id, username, usr_pwd]
 
+    check_data = [user_id, username, usr_pwd]
     if check_password(check_data):
         # Ao confirmar com senha, o processo de criptografia começa
         pwd_data = [user_id, svc_pwd]
@@ -78,6 +81,7 @@ def find_entry_by_name(data: list) -> str:
     # buscando todas as chaves do usuário logado pra encontrar o serviço que ele quer. Se buscar por serviço pode vazar dados de outros usuários.
     user_id = data[0]    
     entry = data[1]
+
     query = db.get_service(entry, user_id)
     if query == None:
         return query
@@ -90,8 +94,9 @@ def find_entry_by_name(data: list) -> str:
 def check_entry(data: list) -> int:
     user_id = data[0]
     service = data[1]  
+
     query = find_entry_by_name([user_id, service])
-    if query == None: # Checando se existe um serviço, site ou app salvo com esse nome no banco
+    if query == None:
         return -1
     else:
         return 0
@@ -105,7 +110,6 @@ def edit_entry_password(data: list) -> None:
     check_data = [user_id, username, usr_pwd]
 
     if check_password(check_data):
-        # Ao confirmar com senha, o processo de criptografia começa
         if check_entry([data[0], data[2]]) == 0:
             pwd_data = [user_id, svc_pwd]
             enc_svc_pwd = create_password(pwd_data)
